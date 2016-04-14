@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.persistence.UserMapper">
+
+	<sql id="userColumns">id,name,age,address,createAt</sql>
+
+	<select id="getUserList" resultType="com.mybatis.domain.User" parameterType="com.mybatis.domain.User">
+		SELECT
+		<include refid="userColumns" />
+		FROM user
+		<where>
+			<if test="name != null and name != ''">
+				name LIKE CONCAT('%','${name}','%')
+			</if>
+		</where>
+		ORDER BY id DESC
+	</select>
+
+	<select id="getUser" resultType="com.mybatis.domain.User" parameterType="int">
+		SELECT
+		<include refid="userColumns" />
+		FROM user WHERE id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<insert id="insertUser" parameterType="com.mybatis.domain.User">
+		INSERT INTO
+		user(name,age,address,createAt)
+		VALUES(#{name,jdbcType=VARCHAR},#{age,jdbcType=INTEGER},
+		#{address,jdbcType=VARCHAR},#{createAt,jdbcType=TIMESTAMP})
+	</insert>
+
+	<update id="updateUser" parameterType="com.mybatis.domain.User">
+		UPDATE user
+		SET 
+		name = #{name,jdbcType=VARCHAR},age = #{age,jdbcType=INTEGER},
+		address = #{address,jdbcType=VARCHAR},createAt = #{createAt,jdbcType=TIMESTAMP}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="deleteUser" parameterType="int">
+		DELETE FROM user WHERE id = #{id,jdbcType=INTEGER}
+	</delete>
+</mapper>
