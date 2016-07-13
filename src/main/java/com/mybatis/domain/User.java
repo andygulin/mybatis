@@ -11,7 +11,7 @@ public class User implements Serializable {
 	private String name;
 	private Integer age;
 	private String address;
-	private Date createAt;
+	private Date createdAt;
 
 	public Integer getId() {
 		return id;
@@ -45,12 +45,12 @@ public class User implements Serializable {
 		this.address = address;
 	}
 
-	public Date getCreateAt() {
-		return createAt;
+	public Date getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreateAt(Date createAt) {
-		this.createAt = createAt;
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
 
 }

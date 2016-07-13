@@ -62,7 +62,7 @@ body {
 							<td>${user.name }</td>
 							<td>${user.age }</td>
 							<td>${user.address }</td>
-							<td><fmt:formatDate value="${user.createAt}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+							<td><fmt:formatDate value="${user.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 							<td><a href="${ctx }/update/${user.id }">更新</a>&nbsp;
 								<a href="javascript:;" onclick="del(${user.id});">删除</a>
 							</td>

@@ -2,41 +2,17 @@ package com.mybatis.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.mybatis.domain.User;
-import com.mybatis.persistence.UserMapper;
 
-@Service
-public class UserService {
+public interface UserService {
 
-	@Autowired
-	private UserMapper userMapper;
+	List<User> getUserList(User user);
 
-	@Transactional(readOnly = true)
-	public List<User> getUserList(User user) {
-		return userMapper.getUserList(user);
-	}
+	User getUser(int id);
 
-	@Transactional(readOnly = true)
-	public User getUser(int id) {
-		return userMapper.getUser(id);
-	}
+	void updateUser(User user);
 
-	@Transactional(rollbackFor = Exception.class)
-	public void updateUser(User user) {
-		userMapper.updateUser(user);
-	}
+	void insertUser(User user);
 
-	@Transactional(rollbackFor = Exception.class)
-	public void insertUser(User user) {
-		userMapper.insertUser(user);
-	}
-
-	@Transactional(rollbackFor = Exception.class)
-	public void deleteUser(int id) {
-		userMapper.deleteUser(id);
-	}
+	void deleteUser(int id);
 }

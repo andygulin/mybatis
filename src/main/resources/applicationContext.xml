@@ -27,6 +27,21 @@
 
 	<tx:jta-transaction-manager />
 
+	<bean id="vendorProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+	    <property name="properties">
+	        <props>
+	            <prop key="SQL Server">sqlserver</prop>
+	            <prop key="DB2">db2</prop>
+	            <prop key="Oracle">oracle</prop>
+	            <prop key="MySQL">mysql</prop>
+	        </props>
+	    </property>
+	</bean>
+
+	<bean id="databaseIdProvider" class="org.apache.ibatis.mapping.VendorDatabaseIdProvider">
+	    <property name="properties" ref="vendorProperties"/>
+	</bean>
+
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="typeAliasesPackage" value="com.mybatis.domain" />
@@ -34,14 +49,18 @@
 		<property name="transactionFactory">
 			<bean class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory" />
 		</property>
+		<property name="configuration">
+			<bean class="org.apache.ibatis.session.Configuration">
+				<property name="mapUnderscoreToCamelCase" value="true" />
+			</bean>
+		</property>
+		<property name="databaseIdProvider" ref="databaseIdProvider"/>
 	</bean>
 
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory" />
+		<constructor-arg index="1" value="BATCH" />
 	</bean>
 
 	<mybatis:scan base-package="com.mybatis.persistence" />
-	<!-- 下面的也可以 -->
-	<!-- <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"> <property 
-		name="basePackage" value="com.mybatis.persistence" /> </bean> -->
 </beans>

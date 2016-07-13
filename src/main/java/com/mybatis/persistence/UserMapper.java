@@ -2,6 +2,9 @@ package com.mybatis.persistence;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Param;
+
 import com.mybatis.domain.User;
 
 public interface UserMapper {
@@ -14,5 +17,6 @@ public interface UserMapper {
 
 	void updateUser(User user);
 
-	void deleteUser(int id);
+	@Delete("DELETE FROM user WHERE id = #{id,jdbcType=INTEGER}")
+	void deleteUser(@Param("id") int id);
 }

@@ -49,7 +49,7 @@ public class UserController {
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String update(@ModelAttribute("user") User user) {
-		user.setCreateAt(new Date());
+		user.setCreatedAt(new Date());
 		userService.updateUser(user);
 		return "redirect:/list";
 	}
@@ -64,7 +64,7 @@ public class UserController {
 
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
 	public Object insert(@ModelAttribute("user") User user) {
-		user.setCreateAt(new Date());
+		user.setCreatedAt(new Date());
 		userService.insertUser(user);
 		return "redirect:/list";
 	}
