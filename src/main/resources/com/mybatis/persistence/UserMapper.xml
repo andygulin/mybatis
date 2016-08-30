@@ -9,12 +9,13 @@
 	<sql id="userColumns">id,name,age,address,createdAt</sql>
 
 	<select id="getUserList" resultType="User" parameterType="User">
+		<bind name="likeValue" value="'%' + name + '%'" />
 		SELECT
 		<include refid="userColumns" />
 		FROM user
 		<where>
 			<if test="name != null and name != ''">
-				name LIKE CONCAT('%','${name}','%')
+				name LIKE #{likeValue}
 			</if>
 		</where>
 		ORDER BY id DESC
