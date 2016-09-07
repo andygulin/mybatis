@@ -1,4 +1,4 @@
-# mybatis-spring example
+# mybatis+spring 动态数据源切换 
 
 ### Init DB
 
