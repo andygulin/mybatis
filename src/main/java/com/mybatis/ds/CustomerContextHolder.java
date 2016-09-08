@@ -12,16 +12,16 @@ public class CustomerContextHolder {
 
 	private static final ThreadLocal<String> contextHolder = new ThreadLocal<String>();
 
-	public static void setCustomerType(String customerType) {
-		contextHolder.set(customerType);
-		logger.info("Switch DataSource -> " + customerType);
+	public static void setDataSource(String dataSource) {
+		contextHolder.set(dataSource);
+		logger.info("Switch DataSource -> " + dataSource);
 	}
 
-	public static String getCustomerType() {
+	public static String getDataSource() {
 		return contextHolder.get();
 	}
 
-	public static void clearCustomerType() {
+	public static void clearDataSource() {
 		contextHolder.remove();
 	}
 }

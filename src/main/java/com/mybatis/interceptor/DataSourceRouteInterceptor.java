@@ -32,11 +32,11 @@ public class DataSourceRouteInterceptor implements Interceptor {
 		logger.info("SqlCommandType : " + commandType);
 		if (commandType == SqlCommandType.INSERT || commandType == SqlCommandType.UPDATE
 				|| commandType == SqlCommandType.DELETE) {
-			CustomerContextHolder.setCustomerType(CustomerContextHolder.DATA_SOURCE_MASTER);
+			CustomerContextHolder.setDataSource(CustomerContextHolder.DATA_SOURCE_MASTER);
 		} else if (commandType == SqlCommandType.SELECT) {
-			CustomerContextHolder.setCustomerType(CustomerContextHolder.DATA_SOURCE_SLAVE);
+			CustomerContextHolder.setDataSource(CustomerContextHolder.DATA_SOURCE_SLAVE);
 		} else {
-			CustomerContextHolder.setCustomerType(CustomerContextHolder.DATA_SOURCE_MASTER);
+			CustomerContextHolder.setDataSource(CustomerContextHolder.DATA_SOURCE_MASTER);
 		}
 		return invocation.proceed();
 	}
