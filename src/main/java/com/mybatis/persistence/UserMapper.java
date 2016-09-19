@@ -9,7 +9,7 @@ import com.mybatis.domain.User;
 
 public interface UserMapper {
 
-	List<User> getUserList(User user);
+	List<User> getUserList(@Param("name") String name);
 
 	User getUser(int id);
 

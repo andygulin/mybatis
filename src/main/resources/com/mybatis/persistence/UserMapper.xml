@@ -6,7 +6,7 @@
 	
 	<sql id="userColumns">id,name,age,address,createdAt</sql>
 
-	<select id="getUserList" resultType="User" parameterType="User">
+	<select id="getUserList" resultType="User" parameterType="String">
 		<bind name="likeValue" value="'%' + name + '%'" />
 		SELECT
 		<include refid="userColumns" />

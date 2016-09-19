@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.mybatis.domain.User;
 import com.mybatis.persistence.UserMapper;
 import com.mybatis.service.UserService;
@@ -16,12 +19,14 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserMapper userMapper;
 
-	@Transactional(readOnly = true)
-	public List<User> getUserList(User user) {
-		return userMapper.getUserList(user);
+	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
+	public PageInfo<User> getUserList(String name, int pageNo, int pageSize) {
+		PageHelper.startPage(pageNo, pageSize);
+		List<User> users = userMapper.getUserList(name);
+		return new PageInfo<>(users);
 	}
 
-	@Transactional(readOnly = true)
+	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
 	public User getUser(int id) {
 		return userMapper.getUser(id);
 	}

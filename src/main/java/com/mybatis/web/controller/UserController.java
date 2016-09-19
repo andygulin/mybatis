@@ -1,7 +1,6 @@
 package com.mybatis.web.controller;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageInfo;
 import com.mybatis.domain.User;
 import com.mybatis.service.UserService;
 
@@ -23,11 +23,11 @@ public class UserController {
 	private UserService userService;
 
 	@GetMapping("/list")
-	public String list(@RequestParam(value = "name", defaultValue = "") String name, Model model) {
-		User user = new User();
-		user.setName(name);
-		List<User> users = userService.getUserList(user);
-		model.addAttribute("users", users);
+	public String list(@RequestParam(value = "name", defaultValue = "") String name,
+			@RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo,
+			@RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize, Model model) {
+		PageInfo<User> pageInfo = userService.getUserList(name, pageNo, pageSize);
+		model.addAttribute("pageInfo", pageInfo);
 		return "list";
 	}
 
