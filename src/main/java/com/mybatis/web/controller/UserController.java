@@ -28,6 +28,7 @@ public class UserController {
 			@RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize, Model model) {
 		PageInfo<User> pageInfo = userService.getUserList(name, pageNo, pageSize);
 		model.addAttribute("pageInfo", pageInfo);
+		model.addAttribute("actionName", "用户列表");
 		return "list";
 	}
 

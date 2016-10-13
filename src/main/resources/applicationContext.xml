@@ -17,22 +17,38 @@
 
 	<context:property-placeholder location="classpath:jdbc.properties" />
 
-	<bean id="masterDataSource" class="com.alibaba.druid.pool.DruidDataSource">
+	<bean id="baseDataSource" class="com.alibaba.druid.pool.DruidDataSource">
+		<property name="filters" value="stat" />
+
+		<property name="maxActive" value="20" />
+		<property name="initialSize" value="1" />
+		<property name="maxWait" value="60000" />
+		<property name="minIdle" value="1" />
+
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+
+		<property name="testWhileIdle" value="true" />
+		<property name="validationQuery" value="SELECT 1"></property>
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxOpenPreparedStatements" value="20" />
+	</bean>
+
+	<bean id="masterDataSource" parent="baseDataSource">
 		<property name="driverClassName" value="${master.jdbc.driverClass}" />
 		<property name="url" value="${master.jdbc.jdbcUrl}" />
 		<property name="username" value="${master.jdbc.user}" />
 		<property name="password" value="${master.jdbc.password}" />
-		<property name="testWhileIdle" value="true"></property>
-		<property name="validationQuery" value="SELECT 1"></property>
 	</bean>
 
-	<bean id="slaveDataSource" class="com.alibaba.druid.pool.DruidDataSource">
+	<bean id="slaveDataSource" parent="baseDataSource">
 		<property name="driverClassName" value="${slave.jdbc.driverClass}" />
 		<property name="url" value="${slave.jdbc.jdbcUrl}" />
 		<property name="username" value="${slave.jdbc.user}" />
 		<property name="password" value="${slave.jdbc.password}" />
-		<property name="testWhileIdle" value="true"></property>
-		<property name="validationQuery" value="SELECT 1"></property>
 	</bean>
 
 	<bean id="dataSource" class="com.mybatis.ds.DynamicDataSource">
