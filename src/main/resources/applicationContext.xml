@@ -1,124 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
-	xsi:schemaLocation="
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd"
-	default-lazy-init="true">
+       default-lazy-init="true">
 
-	<context:component-scan base-package="com.mybatis">
-		<context:exclude-filter type="annotation"
-			expression="org.springframework.stereotype.Controller" />
-		<context:exclude-filter type="annotation"
-			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
-	</context:component-scan>
+    <context:component-scan base-package="com.mybatis">
+        <context:exclude-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation"
+                                expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
 
-	<context:property-placeholder location="classpath:jdbc.properties" />
+    <context:property-placeholder location="classpath:jdbc.properties"/>
 
-	<bean id="baseDataSource" class="com.alibaba.druid.pool.DruidDataSource">
-		<property name="filters" value="stat" />
+    <bean id="baseDataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="filters" value="stat"/>
 
-		<property name="maxActive" value="20" />
-		<property name="initialSize" value="1" />
-		<property name="maxWait" value="60000" />
-		<property name="minIdle" value="1" />
+        <property name="maxActive" value="20"/>
+        <property name="initialSize" value="1"/>
+        <property name="maxWait" value="60000"/>
+        <property name="minIdle" value="1"/>
 
-		<property name="timeBetweenEvictionRunsMillis" value="60000" />
-		<property name="minEvictableIdleTimeMillis" value="300000" />
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
 
-		<property name="testWhileIdle" value="true" />
-		<property name="validationQuery" value="SELECT 1"></property>
-		<property name="testOnBorrow" value="false" />
-		<property name="testOnReturn" value="false" />
+        <property name="testWhileIdle" value="true"/>
+        <property name="validationQuery" value="SELECT 1"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
 
-		<property name="poolPreparedStatements" value="true" />
-		<property name="maxOpenPreparedStatements" value="20" />
-	</bean>
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="maxOpenPreparedStatements" value="20"/>
+    </bean>
 
-	<bean id="masterDataSource" parent="baseDataSource">
-		<property name="driverClassName" value="${master.jdbc.driverClass}" />
-		<property name="url" value="${master.jdbc.jdbcUrl}" />
-		<property name="username" value="${master.jdbc.user}" />
-		<property name="password" value="${master.jdbc.password}" />
-	</bean>
+    <bean id="masterDataSource" parent="baseDataSource">
+        <property name="driverClassName" value="${master.jdbc.driverClass}"/>
+        <property name="url" value="${master.jdbc.jdbcUrl}"/>
+        <property name="username" value="${master.jdbc.user}"/>
+        <property name="password" value="${master.jdbc.password}"/>
+    </bean>
 
-	<bean id="slaveDataSource" parent="baseDataSource">
-		<property name="driverClassName" value="${slave.jdbc.driverClass}" />
-		<property name="url" value="${slave.jdbc.jdbcUrl}" />
-		<property name="username" value="${slave.jdbc.user}" />
-		<property name="password" value="${slave.jdbc.password}" />
-	</bean>
+    <bean id="slaveDataSource" parent="baseDataSource">
+        <property name="driverClassName" value="${slave.jdbc.driverClass}"/>
+        <property name="url" value="${slave.jdbc.jdbcUrl}"/>
+        <property name="username" value="${slave.jdbc.user}"/>
+        <property name="password" value="${slave.jdbc.password}"/>
+    </bean>
 
-	<bean id="dataSource" class="com.mybatis.ds.DynamicDataSource">
-		<property name="targetDataSources">
-			<map key-type="java.lang.String">
-				<entry key="masterDataSource" value-ref="masterDataSource"></entry>
-				<entry key="slaveDataSource" value-ref="slaveDataSource"></entry>
-			</map>
-		</property>
-		<property name="defaultTargetDataSource" ref="masterDataSource" />
-	</bean>
+    <bean id="dataSource" class="com.mybatis.ds.DynamicDataSource">
+        <property name="targetDataSources">
+            <map key-type="java.lang.String">
+                <entry key="masterDataSource" value-ref="masterDataSource"/>
+                <entry key="slaveDataSource" value-ref="slaveDataSource"/>
+            </map>
+        </property>
+        <property name="defaultTargetDataSource" ref="masterDataSource"/>
+    </bean>
 
-	<tx:jta-transaction-manager />
+    <tx:jta-transaction-manager/>
 
-	<bean id="vendorProperties"
-		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-		<property name="properties">
-			<props>
-				<prop key="SQL Server">sqlserver</prop>
-				<prop key="DB2">db2</prop>
-				<prop key="Oracle">oracle</prop>
-				<prop key="MySQL">mysql</prop>
-			</props>
-		</property>
-	</bean>
+    <bean id="vendorProperties"
+          class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="properties">
+            <props>
+                <prop key="SQL Server">sqlserver</prop>
+                <prop key="DB2">db2</prop>
+                <prop key="Oracle">oracle</prop>
+                <prop key="MySQL">mysql</prop>
+            </props>
+        </property>
+    </bean>
 
-	<bean id="databaseIdProvider" class="org.apache.ibatis.mapping.VendorDatabaseIdProvider">
-		<property name="properties" ref="vendorProperties" />
-	</bean>
+    <bean id="databaseIdProvider" class="org.apache.ibatis.mapping.VendorDatabaseIdProvider">
+        <property name="properties" ref="vendorProperties"/>
+    </bean>
 
-	<mybatis:scan base-package="com.mybatis.persistence" />
+    <mybatis:scan base-package="com.mybatis.persistence"/>
 
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="typeAliasesPackage" value="com.mybatis.domain" />
-		<property name="mapperLocations" value="classpath:com/mybatis/persistence/*.xml" />
-		<property name="transactionFactory">
-			<bean
-				class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory" />
-		</property>
-		<property name="configuration">
-			<bean class="org.apache.ibatis.session.Configuration">
-				<property name="mapUnderscoreToCamelCase" value="true" />
-			</bean>
-		</property>
-		<property name="databaseIdProvider" ref="databaseIdProvider" />
-		<property name="plugins">
-			<array>
-				<!-- 数据源路由 -->
-				<bean class="com.mybatis.interceptor.DataSourceRouteInterceptor"></bean>
-				<!-- 分页 -->
-				<bean class="com.github.pagehelper.PageHelper">
-					<property name="properties">
-						<value>
-							dialect=mysql
-							offsetAsPageNum=true
-							rowBoundsWithCount=true
-							pageSizeZero=true
-							reasonable=false
-							supportMethodsArguments=false
-							returnPageInfo=none
-						</value>
-					</property>
-				</bean>
-			</array>
-		</property>
-	</bean>
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="typeAliasesPackage" value="com.mybatis.domain"/>
+        <property name="mapperLocations" value="classpath:com/mybatis/persistence/*.xml"/>
+        <property name="transactionFactory">
+            <bean
+                    class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory"/>
+        </property>
+        <property name="configuration">
+            <bean class="org.apache.ibatis.session.Configuration">
+                <property name="mapUnderscoreToCamelCase" value="true"/>
+            </bean>
+        </property>
+        <property name="databaseIdProvider" ref="databaseIdProvider"/>
+        <property name="plugins">
+            <array>
+                <!-- 数据源路由 -->
+                <bean class="com.mybatis.interceptor.DataSourceRouteInterceptor"/>
+                <!-- 分页 -->
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <value>
+                            helperDialect=mysql
+                            reasonable=true
+                            supportMethodsArguments=true
+                            params=count=countSql
+                            autoRuntimeDialect=true
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+    </bean>
 
-	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="sqlSessionFactory" />
-		<constructor-arg index="1" value="BATCH" />
-	</bean>
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+        <constructor-arg index="1" value="BATCH"/>
+    </bean>
 </beans>

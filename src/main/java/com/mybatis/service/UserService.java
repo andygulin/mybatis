@@ -5,13 +5,13 @@ import com.mybatis.domain.User;
 
 public interface UserService {
 
-	PageInfo<User> getUserList(String name, int pageNo, int pageSize);
+    PageInfo<User> getUserList(String name, int pageNo, int pageSize);
 
-	User getUser(int id);
+    User getUser(int id);
 
-	void updateUser(User user);
+    void updateUser(User user);
 
-	void insertUser(User user);
+    void insertUser(User user);
 
-	void deleteUser(int id);
+    void deleteUser(int id);
 }

@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mybatis.persistence.UserMapper">
-	
-	<sql id="userColumns">id,name,age,address,createdAt</sql>
 
-	<select id="getUserList" resultType="User" parameterType="String">
-		<bind name="likeValue" value="'%' + name + '%'" />
-		SELECT
-		<include refid="userColumns" />
-		FROM user
-		<where>
-			<if test="name != null and name != ''">
-				name LIKE #{likeValue}
-			</if>
-		</where>
-		ORDER BY id DESC
-	</select>
+    <sql id="userColumns">id,name,age,address,createdAt</sql>
 
-	<select id="getUser" resultType="User" parameterType="int">
-		SELECT
-		<include refid="userColumns" />
-		FROM user WHERE id = #{id,jdbcType=INTEGER}
-	</select>
+    <select id="getUserList" resultType="User" parameterType="String">
+        <bind name="likeValue" value="'%' + name + '%'"/>
+        SELECT
+        <include refid="userColumns"/>
+        FROM user
+        <where>
+            <if test="name != null and name != ''">
+                name LIKE #{likeValue}
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
 
-	<insert id="insertUser" parameterType="User">
-		INSERT INTO
-		user(name,age,address,createdAt)
-		VALUES(#{name,jdbcType=VARCHAR},#{age,jdbcType=INTEGER},
-		#{address,jdbcType=VARCHAR},#{createdAt,jdbcType=TIMESTAMP})
-	</insert>
+    <select id="getUser" resultType="User" parameterType="int">
+        SELECT
+        <include refid="userColumns"/>
+        FROM user WHERE id = #{id,jdbcType=INTEGER}
+    </select>
 
-	<update id="updateUser" parameterType="User">
-		UPDATE user
-		SET 
-		name = #{name,jdbcType=VARCHAR},age = #{age,jdbcType=INTEGER},
-		address = #{address,jdbcType=VARCHAR},createdAt = #{createdAt,jdbcType=TIMESTAMP}
-		WHERE id = #{id}
-	</update>
+    <insert id="insertUser" parameterType="User">
+        INSERT INTO
+        user(name,age,address,createdAt)
+        VALUES(#{name,jdbcType=VARCHAR},#{age,jdbcType=INTEGER},
+        #{address,jdbcType=VARCHAR},#{createdAt,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="updateUser" parameterType="User">
+        UPDATE user
+        SET
+        name = #{name,jdbcType=VARCHAR},age = #{age,jdbcType=INTEGER},
+        address = #{address,jdbcType=VARCHAR},createdAt = #{createdAt,jdbcType=TIMESTAMP}
+        WHERE id = #{id}
+    </update>
 </mapper>
